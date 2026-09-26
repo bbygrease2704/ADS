@@ -1,0 +1,53 @@
+{% extends 'layout.html' %}
+
+{% block title %}{% if mode == 'editar' %}Editar cliente{% else %}Nuevo cliente{% endif %} | BUENA VISTA GAS{% endblock %}
+{% block page_title %}{% if mode == 'editar' %}Editar cliente{% else %}Nuevo cliente{% endif %}{% endblock %}
+
+{% block content %}
+<section class="panel-card form-card">
+    <form method="POST">
+        <div class="form-grid">
+            <div>
+                <label>Nombre</label>
+                <input type="text" name="nombre" value="{{ cliente.nombre or '' }}" required>
+            </div>
+            <div>
+                <label>Documento</label>
+                <input type="text" name="documento" value="{{ cliente.documento or '' }}" required>
+            </div>
+            <div>
+                <label>Teléfono</label>
+                <input type="text" name="telefono" value="{{ cliente.telefono or '' }}">
+            </div>
+            <div>
+                <label>Email</label>
+                <input type="email" name="email" value="{{ cliente.email or '' }}">
+            </div>
+            <div class="full-width">
+                <label>Dirección</label>
+                <input type="text" name="direccion" value="{{ cliente.direccion or '' }}">
+            </div>
+            <div>
+                <label>Tipo de cliente</label>
+                <select name="tipo_cliente">
+                    <option value="residencial" {% if cliente.tipo_cliente == 'residencial' %}selected{% endif %}>Residencial</option>
+                    <option value="comercial" {% if cliente.tipo_cliente == 'comercial' %}selected{% endif %}>Comercial</option>
+                    <option value="industrial" {% if cliente.tipo_cliente == 'industrial' %}selected{% endif %}>Industrial</option>
+                </select>
+            </div>
+            <div>
+                <label>Estado</label>
+                <select name="estado">
+                    <option value="activo" {% if cliente.estado == 'activo' %}selected{% endif %}>Activo</option>
+                    <option value="inactivo" {% if cliente.estado == 'inactivo' %}selected{% endif %}>Inactivo</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <a href="{{ url_for('clientes') }}" class="secondary-button">Cancelar</a>
+            <button type="submit" class="primary-button">Guardar</button>
+        </div>
+    </form>
+</section>
+{% endblock %}

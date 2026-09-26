@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}BUENA VISTA GAS{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    {% if session.get('user_id') %}
+    <div class="app-shell">
+        <aside class="sidebar">
+            <div class="brand-box">
+                <div class="brand-mark">BV</div>
+                <div>
+                    <h1>BUENA VISTA</h1>
+                    <small>Gas & Servicios</small>
+                </div>
+            </div>
+
+            <nav class="nav-menu">
+                <a href="{{ url_for('dashboard') }}" class="nav-item">Dashboard</a>
+                <a href="{{ url_for('clientes') }}" class="nav-item">Clientes</a>
+                <a href="{{ url_for('servicios') }}" class="nav-item">Servicios</a>
+                <a href="{{ url_for('ventas') }}" class="nav-item">Ventas</a>
+                <a href="{{ url_for('tickets') }}" class="nav-item">Atención</a>
+                <a href="{{ url_for('logout') }}" class="nav-item danger">Cerrar sesión</a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header class="topbar">
+                <div>
+                    <p class="eyebrow">Panel administrativo</p>
+                    <h2>{% block page_title %}Dashboard{% endblock %}</h2>
+                </div>
+                <div class="user-pill">
+                    <span class="user-dot"></span>
+                    {{ session.get('nombre', 'Usuario') }}
+                </div>
+            </header>
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div class="flash-container">
+                        {% for category, message in messages %}
+                            <div class="flash flash-{{ category }}">{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+    {% else %}
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-container auth-flash">
+                    {% for category, message in messages %}
+                        <div class="flash flash-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+        {% block auth_content %}{% endblock %}
+    {% endif %}
+</body>
+</html>

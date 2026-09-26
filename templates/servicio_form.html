@@ -1,0 +1,55 @@
+{% extends 'layout.html' %}
+
+{% block title %}{% if mode == 'editar' %}Editar servicio{% else %}Nuevo servicio{% endif %} | BUENA VISTA GAS{% endblock %}
+{% block page_title %}{% if mode == 'editar' %}Editar servicio{% else %}Nuevo servicio{% endif %}{% endblock %}
+
+{% block content %}
+<section class="panel-card form-card">
+    <form method="POST">
+        <div class="form-grid">
+            <div>
+                <label>Cliente</label>
+                <select name="cliente_id" required>
+                    <option value="">Seleccionar cliente</option>
+                    {% for cliente in clientes %}
+                    <option value="{{ cliente.id }}" {% if servicio.cliente_id == cliente.id %}selected{% endif %}>{{ cliente.nombre }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div>
+                <label>Tipo de servicio</label>
+                <input type="text" name="tipo_servicio" value="{{ servicio.tipo_servicio or '' }}" required>
+            </div>
+            <div>
+                <label>Fecha de instalación</label>
+                <input type="date" name="fecha_instalacion" value="{{ servicio.fecha_instalacion or '' }}" required>
+            </div>
+            <div>
+                <label>Costo</label>
+                <input type="number" step="0.01" name="costo" value="{{ servicio.costo or 0 }}">
+            </div>
+            <div class="full-width">
+                <label>Dirección</label>
+                <input type="text" name="direccion" value="{{ servicio.direccion or '' }}" required>
+            </div>
+            <div class="full-width">
+                <label>Descripción</label>
+                <textarea name="descripcion" rows="4">{{ servicio.descripcion or '' }}</textarea>
+            </div>
+            <div>
+                <label>Estado</label>
+                <select name="estado">
+                    <option value="pendiente" {% if servicio.estado == 'pendiente' %}selected{% endif %}>Pendiente</option>
+                    <option value="en proceso" {% if servicio.estado == 'en proceso' %}selected{% endif %}>En proceso</option>
+                    <option value="completado" {% if servicio.estado == 'completado' %}selected{% endif %}>Completado</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <a href="{{ url_for('servicios') }}" class="secondary-button">Cancelar</a>
+            <button type="submit" class="primary-button">Guardar</button>
+        </div>
+    </form>
+</section>
+{% endblock %}

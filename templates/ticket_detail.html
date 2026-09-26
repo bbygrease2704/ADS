@@ -1,0 +1,25 @@
+{% extends 'layout.html' %}
+
+{% block title %}Detalle caso | BUENA VISTA GAS{% endblock %}
+{% block page_title %}Detalle del caso{% endblock %}
+
+{% block content %}
+<section class="panel-card detail-card">
+    <div class="detail-header">
+        <div>
+            <h3>{{ ticket.titulo }}</h3>
+            <p>{{ ticket.cliente_nombre }}</p>
+        </div>
+        <div class="detail-actions">
+            <a href="{{ url_for('ticket_editar', ticket_id=ticket.id) }}" class="secondary-button">Editar</a>
+        </div>
+    </div>
+
+    <div class="info-grid">
+        <div><strong>Prioridad:</strong> <span class="badge badge-priority-{{ ticket.prioridad }}">{{ ticket.prioridad }}</span></div>
+        <div><strong>Estado:</strong> <span class="badge badge-{{ ticket.estado }}">{{ ticket.estado }}</span></div>
+        <div><strong>Responsable:</strong> {{ ticket.responsable }}</div>
+        <div class="full-width"><strong>Descripción:</strong> {{ ticket.descripcion }}</div>
+    </div>
+</section>
+{% endblock %}

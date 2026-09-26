@@ -1,0 +1,26 @@
+{% extends 'layout.html' %}
+
+{% block title %}Detalle venta | BUENA VISTA GAS{% endblock %}
+{% block page_title %}Detalle de venta{% endblock %}
+
+{% block content %}
+<section class="panel-card detail-card">
+    <div class="detail-header">
+        <div>
+            <h3>{{ venta.producto }}</h3>
+            <p>{{ venta.cliente_nombre }}</p>
+        </div>
+        <div class="detail-actions">
+            <a href="{{ url_for('venta_editar', venta_id=venta.id) }}" class="secondary-button">Editar</a>
+        </div>
+    </div>
+
+    <div class="info-grid">
+        <div><strong>Cantidad:</strong> {{ venta.cantidad }}</div>
+        <div><strong>Total:</strong> S/. {{ venta.total }}</div>
+        <div><strong>Fecha:</strong> {{ venta.fecha_venta }}</div>
+        <div><strong>Método:</strong> {{ venta.metodo_pago }}</div>
+        <div><strong>Estado:</strong> <span class="badge badge-{{ venta.estado }}">{{ venta.estado }}</span></div>
+    </div>
+</section>
+{% endblock %}

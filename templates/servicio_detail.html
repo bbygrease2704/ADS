@@ -1,0 +1,26 @@
+{% extends 'layout.html' %}
+
+{% block title %}Detalle servicio | BUENA VISTA GAS{% endblock %}
+{% block page_title %}Detalle de servicio{% endblock %}
+
+{% block content %}
+<section class="panel-card detail-card">
+    <div class="detail-header">
+        <div>
+            <h3>{{ servicio.tipo_servicio }}</h3>
+            <p>{{ servicio.cliente_nombre }}</p>
+        </div>
+        <div class="detail-actions">
+            <a href="{{ url_for('servicio_editar', servicio_id=servicio.id) }}" class="secondary-button">Editar</a>
+        </div>
+    </div>
+
+    <div class="info-grid">
+        <div><strong>Dirección:</strong> {{ servicio.direccion }}</div>
+        <div><strong>Fecha:</strong> {{ servicio.fecha_instalacion }}</div>
+        <div><strong>Costo:</strong> S/. {{ servicio.costo }}</div>
+        <div><strong>Estado:</strong> <span class="badge badge-{{ servicio.estado }}">{{ servicio.estado }}</span></div>
+        <div class="full-width"><strong>Descripción:</strong> {{ servicio.descripcion or '-' }}</div>
+    </div>
+</section>
+{% endblock %}

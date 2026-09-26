@@ -1,0 +1,61 @@
+{% extends 'layout.html' %}
+
+{% block title %}Atención | BUENA VISTA GAS{% endblock %}
+{% block page_title %}Casos de atención{% endblock %}
+
+{% block content %}
+<div class="toolbar">
+    <form method="GET" class="filter-form">
+        <input type="text" name="q" value="{{ q }}" placeholder="Buscar caso o cliente">
+        <select name="estado">
+            <option value="">Todos</option>
+            <option value="abierto" {% if estado == 'abierto' %}selected{% endif %}>Abierto</option>
+            <option value="en proceso" {% if estado == 'en proceso' %}selected{% endif %}>En proceso</option>
+            <option value="cerrado" {% if estado == 'cerrado' %}selected{% endif %}>Cerrado</option>
+        </select>
+        <select name="prioridad">
+            <option value="">Todas</option>
+            <option value="baja" {% if prioridad == 'baja' %}selected{% endif %}>Baja</option>
+            <option value="media" {% if prioridad == 'media' %}selected{% endif %}>Media</option>
+            <option value="alta" {% if prioridad == 'alta' %}selected{% endif %}>Alta</option>
+        </select>
+        <button type="submit" class="primary-button">Filtrar</button>
+    </form>
+    <a href="{{ url_for('ticket_nuevo') }}" class="primary-button">+ Nuevo caso</a>
+</div>
+
+<section class="panel-card">
+    <table>
+        <thead>
+            <tr>
+                <th>Cliente</th>
+                <th>Título</th>
+                <th>Prioridad</th>
+                <th>Estado</th>
+                <th>Responsable</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for ticket in tickets %}
+            <tr>
+                <td>{{ ticket.cliente_nombre }}</td>
+                <td>{{ ticket.titulo }}</td>
+                <td><span class="badge badge-priority-{{ ticket.prioridad }}">{{ ticket.prioridad }}</span></td>
+                <td><span class="badge badge-{{ ticket.estado }}">{{ ticket.estado }}</span></td>
+                <td>{{ ticket.responsable }}</td>
+                <td class="action-links">
+                    <a href="{{ url_for('ticket_detalle', ticket_id=ticket.id) }}">Ver</a>
+                    <a href="{{ url_for('ticket_editar', ticket_id=ticket.id) }}">Editar</a>
+                    <form method="POST" action="{{ url_for('ticket_eliminar', ticket_id=ticket.id) }}" onsubmit="return confirm('¿Eliminar caso?');">
+                        <button type="submit" class="link-button danger">Eliminar</button>
+                    </form>
+                </td>
+            </tr>
+            {% else %}
+            <tr><td colspan="6">No hay casos de atención.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+{% endblock %}

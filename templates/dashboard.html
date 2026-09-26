@@ -1,0 +1,73 @@
+{% extends 'layout.html' %}
+
+{% block title %}Dashboard | BUENA VISTA GAS{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="stats-grid">
+    <div class="stat-card">
+        <span>Clientes</span>
+        <strong>{{ stats.clientes }}</strong>
+    </div>
+    <div class="stat-card">
+        <span>Servicios</span>
+        <strong>{{ stats.servicios }}</strong>
+    </div>
+    <div class="stat-card">
+        <span>Ventas</span>
+        <strong>{{ stats.ventas }}</strong>
+    </div>
+    <div class="stat-card">
+        <span>Casos</span>
+        <strong>{{ stats.casos }}</strong>
+    </div>
+</div>
+
+<div class="panel-grid">
+    <section class="panel-card wide">
+        <div class="panel-header">
+            <h3>Clientes recientes</h3>
+            <a href="{{ url_for('clientes') }}" class="text-link">Ver todos</a>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Documento</th>
+                    <th>Teléfono</th>
+                    <th>Estado</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for cliente in clientes_recientes %}
+                <tr>
+                    <td>{{ cliente.nombre }}</td>
+                    <td>{{ cliente.documento }}</td>
+                    <td>{{ cliente.telefono or '-' }}</td>
+                    <td><span class="badge badge-{{ cliente.estado }}">{{ cliente.estado }}</span></td>
+                </tr>
+                {% else %}
+                <tr><td colspan="4">No hay clientes registrados.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+
+    <section class="panel-card">
+        <div class="panel-header">
+            <h3>Casos abiertos</h3>
+            <a href="{{ url_for('tickets') }}" class="text-link">Ir a tickets</a>
+        </div>
+        <div class="list-stack">
+            {% for ticket in tickets_abiertos %}
+            <div class="mini-item">
+                <strong>{{ ticket.titulo }}</strong>
+                <small>{{ ticket.nombre }} · {{ ticket.prioridad }}</small>
+            </div>
+            {% else %}
+            <p>No hay casos abiertos.</p>
+            {% endfor %}
+        </div>
+    </section>
+</div>
+{% endblock %}

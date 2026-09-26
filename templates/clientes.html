@@ -1,0 +1,56 @@
+{% extends 'layout.html' %}
+
+{% block title %}Clientes | BUENA VISTA GAS{% endblock %}
+{% block page_title %}Clientes{% endblock %}
+
+{% block content %}
+<div class="toolbar">
+    <form method="GET" class="filter-form">
+        <input type="text" name="q" value="{{ q }}" placeholder="Buscar por nombre, documento o email">
+        <select name="estado">
+            <option value="">Todos los estados</option>
+            <option value="activo" {% if estado == 'activo' %}selected{% endif %}>Activo</option>
+            <option value="inactivo" {% if estado == 'inactivo' %}selected{% endif %}>Inactivo</option>
+        </select>
+        <button type="submit" class="primary-button">Filtrar</button>
+    </form>
+    <a href="{{ url_for('cliente_nuevo') }}" class="primary-button">+ Nuevo cliente</a>
+</div>
+
+<section class="panel-card">
+    <table>
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Documento</th>
+                <th>Teléfono</th>
+                <th>Email</th>
+                <th>Tipo</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for cliente in clientes %}
+            <tr>
+                <td>{{ cliente.nombre }}</td>
+                <td>{{ cliente.documento }}</td>
+                <td>{{ cliente.telefono or '-' }}</td>
+                <td>{{ cliente.email or '-' }}</td>
+                <td>{{ cliente.tipo_cliente }}</td>
+                <td><span class="badge badge-{{ cliente.estado }}">{{ cliente.estado }}</span></td>
+                <td class="action-links">
+                    <a href="{{ url_for('cliente_detalle', cliente_id=cliente.id) }}">Ver</a>
+                    <a href="{{ url_for('cliente_editar', cliente_id=cliente.id) }}">Editar</a>
+                    <form method="POST" action="{{ url_for('cliente_eliminar', cliente_id=cliente.id) }}" onsubmit="return confirm('¿Eliminar cliente?');">
+                        <button type="submit" class="link-button danger">Eliminar</button>
+                    </form>
+                </td>
+            </tr>
+            {% else %}
+            <tr><td colspan="7">No se encontraron clientes.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+{% endblock %}

@@ -1,0 +1,60 @@
+{% extends 'layout.html' %}
+
+{% block title %}Detalle cliente | BUENA VISTA GAS{% endblock %}
+{% block page_title %}Detalle de cliente{% endblock %}
+
+{% block content %}
+<section class="panel-card detail-card">
+    <div class="detail-header">
+        <div>
+            <h3>{{ cliente.nombre }}</h3>
+            <p>{{ cliente.documento }} · {{ cliente.tipo_cliente }}</p>
+        </div>
+        <div class="detail-actions">
+            <a href="{{ url_for('cliente_editar', cliente_id=cliente.id) }}" class="secondary-button">Editar</a>
+        </div>
+    </div>
+
+    <div class="info-grid">
+        <div><strong>Teléfono:</strong> {{ cliente.telefono or '-' }}</div>
+        <div><strong>Email:</strong> {{ cliente.email or '-' }}</div>
+        <div class="full-width"><strong>Dirección:</strong> {{ cliente.direccion or '-' }}</div>
+        <div><strong>Estado:</strong> <span class="badge badge-{{ cliente.estado }}">{{ cliente.estado }}</span></div>
+    </div>
+</section>
+
+<div class="panel-grid two-columns">
+    <section class="panel-card">
+        <div class="panel-header"><h3>Servicios</h3></div>
+        <ul class="list-simple">
+            {% for servicio in servicios %}
+            <li>{{ servicio.tipo_servicio }} - {{ servicio.estado }} - S/. {{ servicio.costo }}</li>
+            {% else %}
+            <li>No registra servicios.</li>
+            {% endfor %}
+        </ul>
+    </section>
+
+    <section class="panel-card">
+        <div class="panel-header"><h3>Ventas</h3></div>
+        <ul class="list-simple">
+            {% for venta in ventas %}
+            <li>{{ venta.producto }} - {{ venta.cantidad }} und. - {{ venta.estado }}</li>
+            {% else %}
+            <li>No registra ventas.</li>
+            {% endfor %}
+        </ul>
+    </section>
+</div>
+
+<section class="panel-card">
+    <div class="panel-header"><h3>Casos de atención</h3></div>
+    <ul class="list-simple">
+        {% for ticket in tickets %}
+        <li>{{ ticket.titulo }} - {{ ticket.estado }} - {{ ticket.prioridad }}</li>
+        {% else %}
+        <li>No tiene casos activos.</li>
+        {% endfor %}
+    </ul>
+</section>
+{% endblock %}

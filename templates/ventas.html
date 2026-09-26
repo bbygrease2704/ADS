@@ -1,0 +1,56 @@
+{% extends 'layout.html' %}
+
+{% block title %}Ventas | BUENA VISTA GAS{% endblock %}
+{% block page_title %}Ventas de gas{% endblock %}
+
+{% block content %}
+<div class="toolbar">
+    <form method="GET" class="filter-form">
+        <input type="text" name="q" value="{{ q }}" placeholder="Buscar producto o cliente">
+        <select name="estado">
+            <option value="">Todos</option>
+            <option value="completado" {% if estado == 'completado' %}selected{% endif %}>Completado</option>
+            <option value="pendiente" {% if estado == 'pendiente' %}selected{% endif %}>Pendiente</option>
+        </select>
+        <button type="submit" class="primary-button">Filtrar</button>
+    </form>
+    <a href="{{ url_for('venta_nueva') }}" class="primary-button">+ Nueva venta</a>
+</div>
+
+<section class="panel-card">
+    <table>
+        <thead>
+            <tr>
+                <th>Cliente</th>
+                <th>Producto</th>
+                <th>Cantidad</th>
+                <th>Total</th>
+                <th>Fecha</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for venta in ventas %}
+            <tr>
+                <td>{{ venta.cliente_nombre }}</td>
+                <td>{{ venta.producto }}</td>
+                <td>{{ venta.cantidad }}</td>
+                <td>S/. {{ venta.total }}</td>
+                <td>{{ venta.fecha_venta }}</td>
+                <td><span class="badge badge-{{ venta.estado }}">{{ venta.estado }}</span></td>
+                <td class="action-links">
+                    <a href="{{ url_for('venta_detalle', venta_id=venta.id) }}">Ver</a>
+                    <a href="{{ url_for('venta_editar', venta_id=venta.id) }}">Editar</a>
+                    <form method="POST" action="{{ url_for('venta_eliminar', venta_id=venta.id) }}" onsubmit="return confirm('¿Eliminar venta?');">
+                        <button type="submit" class="link-button danger">Eliminar</button>
+                    </form>
+                </td>
+            </tr>
+            {% else %}
+            <tr><td colspan="7">No hay ventas registradas.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+{% endblock %}

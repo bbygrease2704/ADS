@@ -1,0 +1,55 @@
+{% extends 'layout.html' %}
+
+{% block title %}Servicios | BUENA VISTA GAS{% endblock %}
+{% block page_title %}Servicios de instalación{% endblock %}
+
+{% block content %}
+<div class="toolbar">
+    <form method="GET" class="filter-form">
+        <input type="text" name="q" value="{{ q }}" placeholder="Buscar servicio o cliente">
+        <select name="estado">
+            <option value="">Todos</option>
+            <option value="pendiente" {% if estado == 'pendiente' %}selected{% endif %}>Pendiente</option>
+            <option value="en proceso" {% if estado == 'en proceso' %}selected{% endif %}>En proceso</option>
+            <option value="completado" {% if estado == 'completado' %}selected{% endif %}>Completado</option>
+        </select>
+        <button type="submit" class="primary-button">Filtrar</button>
+    </form>
+    <a href="{{ url_for('servicio_nuevo') }}" class="primary-button">+ Nuevo servicio</a>
+</div>
+
+<section class="panel-card">
+    <table>
+        <thead>
+            <tr>
+                <th>Cliente</th>
+                <th>Tipo</th>
+                <th>Fecha</th>
+                <th>Costo</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for servicio in servicios %}
+            <tr>
+                <td>{{ servicio.cliente_nombre }}</td>
+                <td>{{ servicio.tipo_servicio }}</td>
+                <td>{{ servicio.fecha_instalacion }}</td>
+                <td>S/. {{ servicio.costo }}</td>
+                <td><span class="badge badge-{{ servicio.estado }}">{{ servicio.estado }}</span></td>
+                <td class="action-links">
+                    <a href="{{ url_for('servicio_detalle', servicio_id=servicio.id) }}">Ver</a>
+                    <a href="{{ url_for('servicio_editar', servicio_id=servicio.id) }}">Editar</a>
+                    <form method="POST" action="{{ url_for('servicio_eliminar', servicio_id=servicio.id) }}" onsubmit="return confirm('¿Eliminar servicio?');">
+                        <button type="submit" class="link-button danger">Eliminar</button>
+                    </form>
+                </td>
+            </tr>
+            {% else %}
+            <tr><td colspan="6">No hay servicios registrados.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+{% endblock %}
